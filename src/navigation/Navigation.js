@@ -2,14 +2,17 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 //Import screen the Proyects
 import HomeProyect from "../screens/Proyect/HomeProyect";
 import NewProyect from "../screens/Proyect/NewProyect";
+import ListNote from "../screens/Proyect/ListNote";
+import NewNote from "../screens/Proyect/NewNote";
 
 //Import screen the Settings
 import HomeSttings from "../screens/Setting/HomeSttings";
+import NoteStack from "../components/Stack/NoteStack";
 
 const HomeStackNavigator = createNativeStackNavigator();
 const SettingStackNavigator = createNativeStackNavigator();
@@ -34,6 +37,26 @@ function MyStackProyects() {
                 component={NewProyect}
                 options={{
                     headerTitle: 'Nuevo Proyecto',
+                    headerShown: true,
+                }}
+            />
+            <HomeStackNavigator.Screen
+                name='ListNote'
+                component={ListNote}
+                options={{
+                    headerTitle: 'Notas',
+                    headerShown: true,
+                    headerRight : () => (
+                        <NoteStack/>
+                    )
+                    
+                }}
+            />
+            <HomeStackNavigator.Screen
+                name='NewNote'
+                component={NewNote}
+                options={{
+                    headerTitle: 'Nueva Nota',
                     headerShown: true,
                 }}
             />
@@ -66,6 +89,7 @@ function MyTabs() {
             initialRouteName='ListProyects'
             screenOptions={{
                 tabBarActiveBackgroundColor: '#094b4d',
+                tabBarHideOnKeyboard: true,
             }}
         >
             <Tab.Screen
@@ -74,11 +98,11 @@ function MyTabs() {
                 options={{
                     tabBarLabel: 'Presupuestos',
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="file-document-multiple" size={size} color={color} />
+                        <MaterialIcons name="view-list" size={size} color={color} />
                     ),
                     headerShown: false,
                     tabBarActiveBackgroundColor: '#094b4d',
-                    tabBarActiveTintColor: '#fff'
+                    tabBarActiveTintColor: '#fff',
                 }}
             />
             <Tab.Screen
