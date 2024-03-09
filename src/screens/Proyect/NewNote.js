@@ -81,6 +81,8 @@ const NewNote = ({ route }) => {
             <View style={styles.formulario}>
                 <Text style={styles.label}>Concepto:</Text>
                 <TextInput
+                    editable
+                    multiline
                     style={[styles.input, {height: 150}]}
                     value={concepto}
                     onChangeText={text => setConcepto(text)}
