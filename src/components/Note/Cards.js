@@ -20,7 +20,7 @@ const Cards = ({ id }) => {
 
     const notification = (idDelete) => {
         try {
-            deleteInfoId(idDelete);   
+            deleteInfoId(idDelete);
         } catch (error) {
             console.error(error);
         } finally {
@@ -44,10 +44,21 @@ const Cards = ({ id }) => {
                     </View>
                     <View style={styles.row}>
                         <Text style={styles.textConcep}>{info.Concepto}</Text>
-                        <Text>Unidad: {info.Unidad}</Text>
-                        <Text>Cantidades {info.Cantidad}</Text>
-                        <Text>Importe {info.PU}</Text>
-                        <Text>Total: {info.Importe}</Text>
+                        <View style={styles.rowText}>
+                            <View>
+                                <Text style={styles.textTh}>Unidad</Text>
+                                <Text style={styles.textTd}>{info.Unidad}</Text>
+                            </View>
+                            <View>
+                                <Text style={styles.textTh}>Cantidades</Text>
+                                <Text style={styles.textTd}>{info.Cantidad}</Text>
+                            </View>
+                            <View>
+                                <Text style={styles.textTh}>Importe</Text>
+                                <Text style={styles.textTd}>${info.PU}</Text>
+                            </View>
+                        </View>
+                        <Text style={styles.texTotal}>Total: {info.Importe}</Text>
                         <View style={styles.col}>
                             <TouchableHighlight
                                 style={styles.update}
@@ -56,7 +67,7 @@ const Cards = ({ id }) => {
                             </TouchableHighlight>
                             <TouchableHighlight
                                 style={styles.delete}
-                                onPress={()=> deleteNote(info.id)}
+                                onPress={() => deleteNote(info.id)}
                             >
                                 <Text style={styles.textDelete}>Eliinar</Text>
                             </TouchableHighlight>
@@ -71,21 +82,31 @@ const Cards = ({ id }) => {
 const styles = StyleSheet.create({
     card: {
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 24,
         borderColor: '#C7C9CA',
         flexDirection: 'row',
         marginBottom: 20,
+        backgroundColor: '#fff',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 24,
+        elevation: 5,
     },
     cardBorder: {
         height: '100%',
-        width: '2%',
-        borderTopStartRadius: 10,
-        borderBottomStartRadius: 10,
+        width: '5%',
+        borderTopStartRadius: 24,
+        borderBottomStartRadius: 24,
         backgroundColor: '#094b4d'
     },
     row: {
         padding: 20,
         height: '80%',
+        width: "95%",
     },
     col: {
         flexDirection: 'row',
@@ -101,7 +122,7 @@ const styles = StyleSheet.create({
     },
     textUpdate: {
         alignSelf: 'center',
-        color: '#09122b'
+        color: '#09122b',
     },
     delete: {
         padding: 10,
@@ -113,13 +134,33 @@ const styles = StyleSheet.create({
     textDelete: {
         alignSelf: 'center',
         color: '#b81414',
-        
+
     },
     textConcep: {
-        fontSize: 30,
+        fontSize: 24,
         color: '#094b4d',
-        fontWeight: 'bold'
-    }
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    rowText: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 20,
+    },
+    textTh: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    textTd: {
+        fontSize: 16,
+        color: '#5e6168',
+    },
+    texTotal: {
+        fontSize: 25,
+        alignSelf: 'flex-end',
+        fontWeight: 'bold',
+        color: '#094b4d'
+    },
 })
 
 export default Cards;
