@@ -66,10 +66,10 @@ const addNewInfo = (KeyIdProyect, Concepto, Unidad, Cantidad, PU, Importe) => {
                 `INSERT INTO INFO (KeyIdProyect, Concepto, Unidad, Cantidad, PU, Importe) VALUES (?, ?, ?, ?, ?, ?)`,
                 [KeyIdProyect, Concepto, Unidad, Cantidad, PU, Importe],
                 (_, results) => {
-                    console.log('Registro insertado con éxito. ID de fila:', results.insertId);
+                    console.log('Registro insertado con éxito. ID de fila: ', results.insertId);
                 },
                 (_, error) => {
-                    console.error('Error al insertar datos en la tabla INFO:', error);
+                    console.error('Error al insertar datos en la tabla INFO: ', error);
                 }
             );
         });
@@ -79,10 +79,33 @@ const addNewInfo = (KeyIdProyect, Concepto, Unidad, Cantidad, PU, Importe) => {
     }
 }
 
+const deleteInfoId = (idInfo) => {
+    console.log(idInfo);
+    try {
+        db.transaction(tx => {
+            tx.executeSql(
+                `DELETE FROM INFO WHERE id = ?`,
+                [idInfo],
+                (_, resultSet) => {
+                    console.log('Elemento eliminado con éxito');
+                },
+                (_, error) => {
+                    console.error('Error al eliminar el elemento:', error);
+                    return false;
+                }
+            );
+            return true;
+        });
+    } catch (error) {
+        console.error('Error al eliminar el elemento:', error);
+    }
+}
+
 export {
     createTableProyects,
     createTableInfoProyects,
     addNewProyects,
     addNewInfo,
+    deleteInfoId,
     db,
 };

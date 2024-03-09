@@ -23,7 +23,7 @@ const HomeProyects = () => {
     if(state) {
         return(
             <View style={styles.state}>
-                <Text style={styles.stateText}>
+                <Text style={styles.row}>
                     <MaterialIcons name="addchart" size={150} color="#c7c9ca" />
                 </Text>
                 <Text style={styles.stateText}>Aún no tienes proyectos</Text>
@@ -75,6 +75,10 @@ const styles = StyleSheet.create({
     },
     stateText: {
         textAlign: 'center'
+    },
+    row: {
+        marginBottom: 20,
+        fontSize: 15,
     },
 });
 

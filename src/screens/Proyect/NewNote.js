@@ -81,7 +81,7 @@ const NewNote = ({ route }) => {
             <View style={styles.formulario}>
                 <Text style={styles.label}>Concepto:</Text>
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input, {height: 150}]}
                     value={concepto}
                     onChangeText={text => setConcepto(text)}
                 />

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNote } from "../../context/NoteContext";
 import ButtonNew from "../../components/Note/ButtonNew";
 import Cards from "../../components/Note/Cards";
@@ -20,8 +20,8 @@ const ListNote = ({ route }) => {
     if (state) {
         return (
             <View style={styles.state}>
-                <Text style={styles.stateText}>
-                    <MaterialIcons name="addchart" size={150} color="#c7c9ca" />
+                <Text style={styles.row}>
+                    <MaterialCommunityIcons name="file-document-multiple-outline" size={150} color="#c7c9ca"/>
                 </Text>
                 <Text style={styles.stateText}>Aún no tienes notas</Text>
                 <Text style={styles.stateText}>Crea una nueva nota</Text>
@@ -62,10 +62,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     row: {
-        padding: 6,
+        marginBottom: 20,
     },
     stateText: {
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize: 15,
     },
 })
 export default ListNote;
