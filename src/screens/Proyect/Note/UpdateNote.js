@@ -1,5 +1,9 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-native";
+import { useNote } from "../../../context/NoteContext";
+import { ALERT_TYPE, AlertNotificationRoot, Toast } from "react-native-alert-notification";
+import { updateInfo } from "../../../utils/base/db";
 
 const UpdateNote = ({ route }) => {
     const params = route.params;
@@ -42,8 +46,8 @@ const UpdateNote = ({ route }) => {
         };
 
 
-        const result = addNewInfo(
-            params.id,
+        const result = updateInfo(
+            params.data.id,
             concepto,
             unidad,
             parseFloat(cantidad),
@@ -54,8 +58,8 @@ const UpdateNote = ({ route }) => {
         if (result) {
             Toast.show({
                 type: ALERT_TYPE.SUCCESS,
-                title: 'Good',
-                textBody: 'Se a registrado tu proyecto',
+                title: 'Actualizado',
+                textBody: 'Se a actualizado correctamente',
                 autoClose: 3000
             })
             setConcepto('');
@@ -63,63 +67,106 @@ const UpdateNote = ({ route }) => {
             setCantidad(0.0);
             setPU(0.0);
             setImporte(0.0);
-            getNote(params.id);
-            sumImport(params.id);
+            getNote(params.data.KeyIdProyect);
+            sumImport(params.data.KeyIdProyect);
             setTimeout(() => {
-                navigation.navigate("ListNote", { id: params.id })
+                navigation.navigate("ListNote", {id: params.data.KeyIdProyect})
             }, 3000)
             return;
         }
     };
 
+    const allData = () => {
+        setConcepto(params.data.Concepto)
+        setUnidad(params.data.Unidad)
+        setCantidad(parseFloat(params.data.Cantidad).toString())
+        setPU(parseFloat(params.data.PU).toString())
+        setImporte(parseFloat(params.data.Importe).toFixed(2).toString())
+    } 
+    useEffect(() => {
+        allData();
+    }, [])
+    
+
     return (
-        <View style={styles.formulario}>
-            <Text style={styles.label}>Concepto:</Text>
-            <TextInput
-                style={styles.input}
-                value={concepto}
-                onChangeText={text => setConcepto(text)}
-            />
-            <Text style={styles.label}>Unidad:</Text>
-            <TextInput
-                style={styles.input}
-                value={unidad}
-                onChangeText={text => setUnidad(text)}
-            />
-            <Text style={styles.label}>Cantidad:</Text>
-            <TextInput
-                style={styles.input}
-                value={cantidad}
-                onChangeText={text => sumCantidad(text)}
-                keyboardType="numeric"
-            />
-            <Text style={styles.label}>PU:</Text>
-            <TextInput
-                style={styles.input}
-                value={pu}
-                onChangeText={text => sumPU(text)}
-                keyboardType="numeric"
-            />
-            <Text style={styles.label}>Importe:</Text>
-            <TextInput
-                style={styles.input}
-                value={importe}
-                keyboardType="numeric"
-            />
-            <TouchableHighlight
-                style={styles.button}
-                onPress={handleAgregar}
-            >
-                <View>
-                    <Text style={styles.textButton}>Agregar</Text>
-                </View>
-            </TouchableHighlight>
-        </View>
+        <AlertNotificationRoot>
+            <View style={styles.formulario}>
+                <Text style={styles.label}>Concepto:</Text>
+                <TextInput
+                    editable
+                    multiline
+                    style={[styles.input, {height: 150}]}
+                    value={concepto}
+                    onChangeText={text => setConcepto(text)}
+                />
+                <Text style={styles.label}>Unidad:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={unidad}
+                    onChangeText={text => setUnidad(text)}
+                />
+                <Text style={styles.label}>Cantidad:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={cantidad}
+                    onChangeText={text => sumCantidad(text)}
+                    keyboardType="numeric"
+                />
+                <Text style={styles.label}>PU:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={pu}
+                    onChangeText={text => sumPU(text)}
+                    keyboardType="numeric"
+                />
+                <Text style={styles.label}>Importe:</Text>
+                <TextInput
+                    style={styles.input}
+                    value={importe}
+                    keyboardType="numeric"
+                />
+                <TouchableHighlight
+                    style={styles.button}
+                    onPress={handleAgregar}
+                >
+                    <View>
+                        <Text style={styles.textButton}>Agregar</Text>
+                    </View>
+                </TouchableHighlight>
+            </View>
+        </AlertNotificationRoot>
     )
 }
 
 const styles = StyleSheet.create({
-
+    formulario: {
+        margin: 20
+    },
+    label: {
+        fontSize: 18,
+        marginBottom: 5,
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 15,
+    },
+    button: {
+        width: "100%",
+        backgroundColor: "#094b4d",
+        borderRadius: 15,
+        height: "auto",
+        alignSelf: "center",
+        alignItems: "center",
+        padding: 10
+    },
+    textButton: {
+        color: '#fff',
+        fontSize: 15,
+        marginVertical: 10
+    }
 })
 
 export default UpdateNote;

@@ -43,8 +43,28 @@ const createTableInfoProyects = () => {
     }
 };
 
+const createTableUser = () => {
+    try {
+        db.transaction(tx => {
+            tx.executeSql(
+                `CREATE TABLE IF NOT EXISTS USERS (
+                    id INTERGER PRIMARY KEY AUTOINCREMENT,
+                    Phone LONG,
+                    Email TEXT,
+                    Name TEXT,
+                    LastName TEXT,
+                    Surname TEXT,
+                    Password TEXT,
+
+                )`
+            )
+        })
+    } catch (error) {
+        console.error('Erroe al crear la tabla USER:', error);
+    }
+}
+
 const addNewProyects = (nameProyect, date, nameClient, address) => {
-    
     try {
         db.transaction(tx => {
             tx.executeSql(
@@ -79,16 +99,35 @@ const addNewInfo = (KeyIdProyect, Concepto, Unidad, Cantidad, PU, Importe) => {
     }
 }
 
+const updateInfo = (id, newConcepto, newUnidad, newCantidad, newPU, newImporte) => {
+    let status = true;
+    try {
+        db.transaction(tx => {
+            tx.executeSql(
+                `UPDATE INFO SET Concepto = ?, Unidad = ?, Cantidad = ?, PU = ?, Importe = ? WHERE id = ?`,
+                [newConcepto, newUnidad, newCantidad, newPU, newImporte, id],
+                (_, results) => {
+                    return status = true;
+                },
+                (_, error) => {
+                    console.error('Error al actualizar la información en la tabla INFO:', error)
+                    return status = false;
+                }
+            );
+        });
+        return status;
+    } catch (error) {
+        console.error('Error al ejecutar la función de actualización:', error);
+        return false;
+    }
+};
+
 const deleteInfoId = (idInfo) => {
-    console.log(idInfo);
     try {
         db.transaction(tx => {
             tx.executeSql(
                 `DELETE FROM INFO WHERE id = ?`,
                 [idInfo],
-                (_, resultSet) => {
-                    console.log('Elemento eliminado con éxito');
-                },
                 (_, error) => {
                     console.error('Error al eliminar el elemento:', error);
                     return false;
@@ -98,6 +137,7 @@ const deleteInfoId = (idInfo) => {
         });
     } catch (error) {
         console.error('Error al eliminar el elemento:', error);
+        return false;
     }
 }
 
@@ -107,5 +147,6 @@ export {
     addNewProyects,
     addNewInfo,
     deleteInfoId,
+    updateInfo,
     db,
 };

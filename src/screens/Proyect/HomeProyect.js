@@ -46,6 +46,7 @@ const HomeProyects = () => {
             </View>
             <ScrollView 
                 style={styles.rowCard}
+                showsVerticalScrollIndicator={false}
             >
                 <Cards
                     searchPhrase={searchPhrase}
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignSelf: 'center',
+        height: '100%',
     },
     stateText: {
         textAlign: 'center'

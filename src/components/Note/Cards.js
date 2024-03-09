@@ -3,18 +3,22 @@ import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import { useNote } from "../../context/NoteContext";
 import { ALERT_TYPE, Dialog } from "react-native-alert-notification";
 import { deleteInfoId } from '../../utils/base/db'
+import { useNavigation } from "@react-navigation/native";
 
 const Cards = ({ id }) => {
 
+    const navigation = useNavigation();
     const { data, getNote } = useNote();
 
     const deleteNote = (idDelete) => {
         Dialog.show({
             type: ALERT_TYPE.WARNING,
-            title: '¿Seguro quieres elimminarlo?',
+            title: '¿Seguro quieres eliminarlo?',
             textBody: 'Una vez eliminada no se podra recuperar la nota.',
             button: 'Aceptar',
-            onPressButton: () => notification(idDelete)
+            autoClose: true,
+            onPressButton: () => notification(idDelete),
+
         })
     }
 
@@ -24,7 +28,8 @@ const Cards = ({ id }) => {
         } catch (error) {
             console.error(error);
         } finally {
-            getNote();
+            Dialog.hide();
+            getNote(id);
         }
     }
 
@@ -62,11 +67,16 @@ const Cards = ({ id }) => {
                         <View style={styles.col}>
                             <TouchableHighlight
                                 style={styles.update}
+                                activeOpacity={0.9}
+                                underlayColor="#F7F6F6"
+                                onPress={() => navigation.navigate("UpdateNote", {data: info})}
                             >
                                 <Text style={styles.textUpdate}>Editar</Text>
                             </TouchableHighlight>
                             <TouchableHighlight
                                 style={styles.delete}
+                                activeOpacity={0.9}
+                                underlayColor="#F7F6F6"
                                 onPress={() => deleteNote(info.id)}
                             >
                                 <Text style={styles.textDelete}>Eliinar</Text>

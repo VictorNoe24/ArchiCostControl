@@ -9,10 +9,11 @@ import HomeProyect from "../screens/Proyect/HomeProyect";
 import NewProyect from "../screens/Proyect/NewProyect";
 import ListNote from "../screens/Proyect/ListNote";
 import NewNote from "../screens/Proyect/NewNote";
+import UpdateNote from "../screens/Proyect/Note/UpdateNote";
+import NoteStack from "../components/Stack/NoteStack";
 
 //Import screen the Settings
 import HomeSttings from "../screens/Setting/HomeSttings";
-import NoteStack from "../components/Stack/NoteStack";
 
 const HomeStackNavigator = createNativeStackNavigator();
 const SettingStackNavigator = createNativeStackNavigator();
@@ -57,6 +58,14 @@ function MyStackProyects() {
                 component={NewNote}
                 options={{
                     headerTitle: 'Nueva Nota',
+                    headerShown: true,
+                }}
+            />
+            <HomeStackNavigator.Screen
+                name='UpdateNote'
+                component={UpdateNote}
+                options={{
+                    headerTitle: 'Actualizar nota',
                     headerShown: true,
                 }}
             />

@@ -1,9 +1,23 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SimpleLineIcons } from '@expo/vector-icons';
 
 const Cards = ({ searchPhrase, proyects, isLoading }) => {
     const navigation = useNavigation();
+
+    const formateDate = (dateString) => {
+        const months = [
+            "enero", "febrero", "marzo", "abril", "mayo", "junio",
+            "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+        ];
+
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const monthIndex = date.getMonth();
+        const year = date.getFullYear();
+        return `${day} de ${months[monthIndex]} del ${year}`;
+    }
 
     const filterProyectsByName = () => {
         if (searchPhrase) {
@@ -26,13 +40,20 @@ const Cards = ({ searchPhrase, proyects, isLoading }) => {
             {filterProyectsByName().map((proyect, index) => (
                 <TouchableOpacity
                     key={index}
-                    onPress={() => navigation.navigate("ListNote", {id: proyect.id})}
+                    onPress={() => navigation.navigate("ListNote", { id: proyect.id })}
                     style={styles.container}
                 >
                     <View>
-                        <Text style={styles.textName}>{proyect.NameClient}</Text>
+                        <View style={styles.row}>
+                            <Text style={styles.textDate}>{formateDate(proyect.Date)}</Text>
+                            <TouchableOpacity
+                                onPress={() => console.log("Hola gai")}
+                            >
+                                <SimpleLineIcons name="options-vertical" size={24} color="black" />
+                            </TouchableOpacity>
+                        </View>
                         <Text style={styles.textProyect}>{proyect.NameProyect}</Text>
-                        <Text style={styles.textLocation}>{proyect.Address}</Text>
+                        <Text style={styles.textClient}>{proyect.NameClient}</Text>
                     </View>
                 </TouchableOpacity>
             ))}
@@ -44,8 +65,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 24,
         width: '100%',
-        borderRadius: '12px',
-        borderRadius: 15,
+        borderRadius: 24,
         borderColor: '#C7C9CA',
         borderWidth: 1,
         marginBottom: 10,
@@ -55,17 +75,23 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    textLocation: {
+    textClient: {
         fontSize: 16,
         color: '#666',
         marginTop: 20,
     },
     textProyect: {
-        fontSize: 24
+        fontSize: 24,
+        color: '#094b4d',
+        fontWeight: 'bold',
     },
-    textName: {
+    textDate: {
         fontSize: 16,
         marginBottom: 20,
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 })
 

@@ -36,7 +36,9 @@ const ListNote = ({ route }) => {
     return (
         <AlertNotificationRoot>
             <View style={styles.container}>
-                <ScrollView>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                >
                     <Cards
                         id={params.id}
                     />
