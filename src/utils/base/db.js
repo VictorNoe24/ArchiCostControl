@@ -128,6 +128,9 @@ const deleteInfoId = (idInfo) => {
             tx.executeSql(
                 `DELETE FROM INFO WHERE id = ?`,
                 [idInfo],
+                (_, results) =>{
+                    return true;
+                },
                 (_, error) => {
                     console.error('Error al eliminar el elemento:', error);
                     return false;
