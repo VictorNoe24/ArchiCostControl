@@ -89,7 +89,7 @@ const UpdateNote = ({ route }) => {
     
 
     return (
-        <AlertNotificationRoot>
+        <>
             <View style={styles.formulario}>
                 <Text style={styles.label}>Concepto:</Text>
                 <TextInput
@@ -134,7 +134,7 @@ const UpdateNote = ({ route }) => {
                     </View>
                 </TouchableHighlight>
             </View>
-        </AlertNotificationRoot>
+        </>
     )
 }
 
