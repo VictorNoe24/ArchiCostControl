@@ -2,7 +2,7 @@
   "expo": {
     "name": "ArchiCostControl",
     "slug": "ArchiCostControl",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,12 +19,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.victornoe.ArchiCostControl"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "extra": {
+      "eas": {
+        "projectId": "e18e9171-6ad2-45f2-b765-6fcd6b454fc0"
+      }
     }
   }
 }

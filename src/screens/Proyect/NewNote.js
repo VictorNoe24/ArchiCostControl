@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-native";
-import { ALERT_TYPE, AlertNotificationRoot, Toast } from "react-native-alert-notification";
+import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import { addNewInfo } from "../../utils/base/db";
 import { useNote } from "../../context/NoteContext";
 import { useNavigation } from "@react-navigation/native";
@@ -77,7 +77,7 @@ const NewNote = ({ route }) => {
     };
 
     return (
-        <AlertNotificationRoot>
+        <>
             <View style={styles.formulario}>
                 <Text style={styles.label}>Concepto:</Text>
                 <TextInput
@@ -122,7 +122,7 @@ const NewNote = ({ route }) => {
                     </View>
                 </TouchableHighlight>
             </View>
-        </AlertNotificationRoot>
+        </>
     )
 }
 

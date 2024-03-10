@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StatusBar, TouchableHighlight, Button, TextInput, StyleSheet } from "react-native";
 import { addNewProyects } from "../../utils/base/db";
-import { ALERT_TYPE, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from '../../context/ThemeContext';
 
@@ -55,7 +55,7 @@ const NewProyect = () => {
     }
 
     return (
-        <AlertNotificationRoot>
+        <>
             <View style={styles.container}>
                 <StatusBar style={'light-content'} backgroundColor="#094b4d" />
                 <Text style={styles.label}>Nombre del Proyecto:</Text>
@@ -85,7 +85,7 @@ const NewProyect = () => {
                     </View>
                 </TouchableHighlight>
             </View>
-        </AlertNotificationRoot>
+        </>
     )
 }
 

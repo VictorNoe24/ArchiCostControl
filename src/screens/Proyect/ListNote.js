@@ -4,7 +4,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNote } from "../../context/NoteContext";
 import ButtonNew from "../../components/Note/ButtonNew";
 import Cards from "../../components/Note/Cards";
-import { AlertNotificationRoot } from "react-native-alert-notification";
 
 const ListNote = ({ route }) => {
     const params = route.params;
@@ -34,7 +33,7 @@ const ListNote = ({ route }) => {
     };
 
     return (
-        <AlertNotificationRoot>
+        <>
             <View style={styles.container}>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
@@ -48,7 +47,7 @@ const ListNote = ({ route }) => {
                     sizeB={"90%"}
                 />
             </View>
-        </AlertNotificationRoot>
+        </>
     );
 }
 
