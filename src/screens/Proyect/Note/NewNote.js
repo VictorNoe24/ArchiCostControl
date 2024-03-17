@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-native";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
-import { addNewInfo } from "../../utils/base/db";
-import { useNote } from "../../context/NoteContext";
+import { addNewInfo } from "../../../utils/base/db";
+import { useNote } from "../../../context/NoteContext";
 import { useNavigation } from "@react-navigation/native";
 
 const NewNote = ({ route }) => {

@@ -37,9 +37,9 @@ const Cards = ({ searchPhrase, proyects, isLoading }) => {
 
     return (
         <View>
-            {filterProyectsByName().map((proyect, index) => (
+            {filterProyectsByName().map((proyect) => (
                 <TouchableOpacity
-                    key={index}
+                    key={proyect.id}
                     onPress={() => navigation.navigate("ListNote", { id: proyect.id })}
                     style={styles.container}
                 >
@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
         borderColor: '#C7C9CA',
         borderWidth: 1,
         marginBottom: 10,
+        backgroundColor: '#fff',
     },
     loading: {
         flex: 1,

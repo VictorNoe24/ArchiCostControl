@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNote } from "../../context/NoteContext";
-import ButtonNew from "../../components/Note/ButtonNew";
-import Cards from "../../components/Note/Cards";
+import { useNote } from "../../../context/NoteContext";
+import ButtonNew from "../../../components/Note/ButtonNew";
+import Cards from "../../../components/Note/Cards";
+
 
 const ListNote = ({ route }) => {
     const params = route.params;
     const { state, importe, getNote, sumImport, getProyectId } = useNote();
-
     useEffect(() => {
         getNote(params.id)
         sumImport(params.id);
@@ -18,7 +18,7 @@ const ListNote = ({ route }) => {
 
     if (state) {
         return (
-            <View style={styles.state}>
+            <View s tyle={styles.state}>
                 <Text style={styles.row}>
                     <MaterialCommunityIcons name="file-document-multiple-outline" size={150} color="#c7c9ca"/>
                 </Text>

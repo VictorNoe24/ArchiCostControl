@@ -7,13 +7,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 //Import screen the Proyects
 import HomeProyect from "../screens/Proyect/HomeProyect";
 import NewProyect from "../screens/Proyect/NewProyect";
-import ListNote from "../screens/Proyect/ListNote";
-import NewNote from "../screens/Proyect/NewNote";
+import ListNote from "../screens/Proyect/Note/ListNote";
+import NewNote from "../screens/Proyect/Note/NewNote";
 import UpdateNote from "../screens/Proyect/Note/UpdateNote";
 import NoteStack from "../components/Stack/NoteStack";
 
 //Import screen the Settings
 import HomeSttings from "../screens/Setting/HomeSttings";
+import Profile from "../screens/Setting/EditUser/Profile";
 
 const HomeStackNavigator = createNativeStackNavigator();
 const SettingStackNavigator = createNativeStackNavigator();
@@ -86,6 +87,14 @@ function MyStackSettings() {
             <SettingStackNavigator.Screen
                 name='HomeSettings'
                 component={HomeSttings}
+            />
+            <SettingStackNavigator.Screen
+                name='Profile'
+                component={Profile}
+                options={{
+                    headerTitle: 'Perfil',
+                    headerShown: true,
+                }}
             />
         </SettingStackNavigator.Navigator>
     )

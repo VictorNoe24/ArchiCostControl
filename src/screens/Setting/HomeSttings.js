@@ -1,9 +1,12 @@
 import React from "react";
 import { View, Text, StatusBar, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Octicons, SimpleLineIcons } from '@expo/vector-icons';
+import { Octicons, SimpleLineIcons, Feather } from '@expo/vector-icons';
 import { ALERT_TYPE, Dialog } from "react-native-alert-notification";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeSettings = () => {
+
+    const navigation = useNavigation();
 
     const noAccess = () => {
         Dialog.show({
@@ -11,13 +14,20 @@ const HomeSettings = () => {
             title: 'En desarrollo',
             textBody: 'Actualmente el modulo sigue en desarrollo',
             button: 'cerrar',
-          })
+        })
     }
 
     return (
         <View style={styles.container}>
             <StatusBar style={'light-content'} backgroundColor="#094b4d" />
             <View style={styles.user}>
+                <View style={styles.moreOption}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('Profile')}
+                    >
+                        <Feather name="edit" size={24} color="black" />
+                    </TouchableOpacity>
+                </View>
                 <View>
                     <Image
                         style={styles.image}
@@ -33,7 +43,7 @@ const HomeSettings = () => {
                 </View>
             </View>
             <TouchableOpacity
-                onPress={()=> noAccess()}
+                onPress={() => noAccess()}
             >
                 <View style={styles.card} onPress={() => console.log('Lo sentimos :(')}>
                     <Octicons style={{ marginRight: '-35%' }} name="repo-template" size={30} color="black" />
@@ -42,7 +52,7 @@ const HomeSettings = () => {
                 </View>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={()=> noAccess()}
+                onPress={() => noAccess()}
             >
                 <View style={styles.card} onPress={() => console.log('Lo sentimos :(')}>
                     <Octicons style={{ marginRight: '-15%' }} name="repo-template" size={30} color="black" />
@@ -102,6 +112,11 @@ const styles = StyleSheet.create({
     textCard: {
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    moreOption: {
+        position: "absolute",
+        top: '10%',
+        right: '10%',
     },
 })
 

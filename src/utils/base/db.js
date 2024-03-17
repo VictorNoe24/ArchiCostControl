@@ -49,18 +49,51 @@ const createTableUser = () => {
             tx.executeSql(
                 `CREATE TABLE IF NOT EXISTS USERS (
                     id INTERGER PRIMARY KEY AUTOINCREMENT,
-                    Phone LONG,
-                    Email TEXT,
-                    Name TEXT,
-                    LastName TEXT,
-                    Surname TEXT,
-                    Password TEXT,
-
+                    Phone LONG UNIQUE,
+                    Email VARCHAR(100) UNIQUE,
+                    Name VARCHAR(45),
+                    LastName VARCHAR(36),
+                    Surname VARCHAR(36),
+                    Password VARCHAR(15),
+                    Image TEXT,
                 )`
             )
         })
     } catch (error) {
         console.error('Erroe al crear la tabla USER:', error);
+    }
+}
+
+const createTableCategory = () => {
+    try {
+        db.transaction(tx => {
+            tx.executeSql(
+                `CREATE TABLE IF NOT EXISTS CATEGORIES (
+                    id INTERGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT
+                )`
+            )
+        })
+    } catch (error) {
+        console.log('Error al crear la tabla CATEGORIES:', error);
+    }
+}
+
+const createTableUserCategory = () => {
+    try {
+        db.transaction(tx => {
+            tx.executeSql(
+                `CREATE TABLE IF NOT EXISTS CATEGORIES (
+                    id INTERGER PRIMARY KEY AUTOINCREMENT,
+                    id_user INTERGER,
+                    id_category INTERGER,
+                    FOREIGN KEY (id_user) REFERENCES USERS(id),
+                    FOREIGN KEY (id_categORY) REFERENCES CATEGORIES(id)
+                )`
+            )
+        })
+    } catch (error) {
+        console.log('Error al crear la tabla CATEGORIES:', error);
     }
 }
 
@@ -128,7 +161,7 @@ const deleteInfoId = (idInfo) => {
             tx.executeSql(
                 `DELETE FROM INFO WHERE id = ?`,
                 [idInfo],
-                (_, results) =>{
+                (_, results) => {
                     return true;
                 },
                 (_, error) => {
@@ -147,6 +180,9 @@ const deleteInfoId = (idInfo) => {
 export {
     createTableProyects,
     createTableInfoProyects,
+    createTableUserCategory,
+    createTableCategory,
+    createTableUser,
     addNewProyects,
     addNewInfo,
     deleteInfoId,

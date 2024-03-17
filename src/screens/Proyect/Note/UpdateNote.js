@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-native";
 import { useNote } from "../../../context/NoteContext";
-import { ALERT_TYPE, AlertNotificationRoot, Toast } from "react-native-alert-notification";
+import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import { updateInfo } from "../../../utils/base/db";
 
 const UpdateNote = ({ route }) => {
