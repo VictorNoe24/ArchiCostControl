@@ -1,13 +1,17 @@
 import { Asset } from "expo-asset";
+import {useAuth} from "../../context/AuthContext";
+import {manipulateAsync} from "expo-image-manipulator";
 
-const pdfHtml = (dataProyect, datas, total) => {
+async function pdfHtml1 (dataProyect, datas, total){
 
-    const logoUrl = Asset.fromModule(require('../../../assets/logo.png')).uri;
+    const { dataUser } = useAuth();
+    const asset = Asset.fromModule(require('../../../assets/logo.png'));
+    const image = await manipulateAsync(asset.localUri ?? asset.uri, [], { base64: true });
     const currentDate = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = currentDate.toLocaleDateString('es-ES', options);
 
-    const html = `
+    return `
     <!DOCTYPE html>
     <html lang="es">
     <head>
@@ -108,7 +112,7 @@ const pdfHtml = (dataProyect, datas, total) => {
     <div class="container">
         <div class="header">
             <div class="logo-container">
-                <img src="${logoUrl}" alt="Logo de la empresa">
+                <img src="data:image/jpeg;base64,${image.base64}" alt="Logo de la empresa">
                 <div>
                     <h2>Presupuesto</h2>
                     ${dataProyect.map(data =>`
@@ -121,8 +125,8 @@ const pdfHtml = (dataProyect, datas, total) => {
             </div>
             <div class="contact-info">
                 <p><strong>Servicios:</strong> Construcción, remodelación, impermeabilización, pintura, plomería, electricidad y mantenimiento en general.</p>
-                <p><strong>Teléfono:</strong> 7771758739</p>
-                <p><strong>Correo:</strong> noe.avi@hotmail.com</p>
+                <p><strong>Teléfono:</strong> ${dataUser[0].Phone}</p>
+                <p><strong>Correo:</strong> ${dataUser[0].Email}</p>
             </div>
         </div>
 
@@ -148,18 +152,13 @@ const pdfHtml = (dataProyect, datas, total) => {
             </tbody>
         </table>
         <div class="total">
-            <p><strong>Total:</strong> $${total}</p>
+            <p><strong>Total:</strong> $${parseFloat(total).toFixed(2)}</p>
         </div>
     </div>
 
     </body>
     </html>
-
     `;
-    
-    return html;
 }
 
-module.exports = {
-    pdfHtml
-}
+export default pdfHtml1;

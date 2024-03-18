@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-native";
+import {ScrollView, StyleSheet, Text, TextInput, TouchableHighlight, View} from "react-native";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import { addNewInfo } from "../../../utils/base/db";
 import { useNote } from "../../../context/NoteContext";
 import { useNavigation } from "@react-navigation/native";
+import Input from "../../../components/Note/Input";
 
 const NewNote = ({ route }) => {
     const params = route.params;
@@ -16,35 +17,20 @@ const NewNote = ({ route }) => {
     const [pu, setPU] = useState('');
     const [importe, setImporte] = useState('');
 
-    const sumCantidad = (text) => {
-        setCantidad(text)
-        if ((pu !== 0.0)) {
-            let result = text * pu;
-            result = result.toFixed(2)
-            setImporte(result)
-        }
-    }
-
-    const sumPU = (text) => {
-        setPU(text)
-        if ((cantidad !== 0.0)) {
-            let result = cantidad * text;
-            result = result.toFixed(2);
-            setImporte(result)
-        }
-    }
-
     const handleAgregar = () => {
-        if (!concepto || !unidad || !cantidad || !pu || !importe) {
+        if (!concepto || !unidad || !cantidad || !pu ) {
             Toast.show({
-                type: ALERT_TYPE.DANGER,
-                title: 'Error',
-                textBody: 'Llena todo el formulario',
+                type: ALERT_TYPE.WARNING,
+                title: 'Avertencia',
+                textBody: 'Llena todos los campos del formulario',
                 autoClose: 2000
             });
             return;
         };
 
+        let sum = cantidad * pu;
+        sum = sum.toFixed(2)
+        console.log(sum)
 
         const result = addNewInfo(
             params.id,
@@ -52,66 +38,63 @@ const NewNote = ({ route }) => {
             unidad,
             parseFloat(cantidad),
             parseFloat(pu),
-            parseFloat(importe),
+            parseFloat(sum),
         );
 
         if (result) {
             Toast.show({
                 type: ALERT_TYPE.SUCCESS,
-                title: 'Good',
-                textBody: 'Se a registrado tu proyecto',
+                title: 'Agregado',
+                textBody: 'Se a registrado una nueva nota',
                 autoClose: 3000
             })
-            setConcepto('');
-            setUnidad('');
-            setCantidad(0.0);
-            setPU(0.0);
-            setImporte(0.0);
             getNote(params.id);
             sumImport(params.id);
             setTimeout(() => {
+                setConcepto('');
+                setUnidad('');
+                setCantidad('');
+                setPU('');
+                setImporte('');
                 navigation.navigate("ListNote", {id: params.id})
-            }, 3000)
+            }, 200)
             return;
         }
     };
 
     return (
         <>
-            <View style={styles.formulario}>
-                <Text style={styles.label}>Concepto:</Text>
-                <TextInput
-                    editable
-                    multiline
-                    style={[styles.input, {height: 150}]}
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={styles.formulario}
+            >
+                <Input
                     value={concepto}
-                    onChangeText={text => setConcepto(text)}
+                    setValue={setConcepto}
+                    size={150}
+                    titleInput={'Concepto'}
+                    placehol={'Introduce el contexto'}
+                    multilineState={true}
                 />
-                <Text style={styles.label}>Unidad:</Text>
-                <TextInput
-                    style={styles.input}
+                <Input
                     value={unidad}
-                    onChangeText={text => setUnidad(text)}
+                    setValue={setUnidad}
+                    titleInput={'unidad'}
+                    placehol={'Introduce la unidad de medida'}
                 />
-                <Text style={styles.label}>Cantidad:</Text>
-                <TextInput
-                    style={styles.input}
+                <Input
                     value={cantidad}
-                    onChangeText={text => sumCantidad(text)}
-                    keyboardType="numeric"
+                    setValue={setCantidad}
+                    titleInput={'Cantidades'}
+                    typeKeyBoard={'numeric'}
+                    placehol={'Introduce las unidades del producto'}
                 />
-                <Text style={styles.label}>PU:</Text>
-                <TextInput
-                    style={styles.input}
+                <Input
                     value={pu}
-                    onChangeText={text => sumPU(text)}
-                    keyboardType="numeric"
-                />
-                <Text style={styles.label}>Importe:</Text>
-                <TextInput
-                    style={styles.input}
-                    value={importe}
-                    keyboardType="numeric"
+                    setValue={setPU}
+                    titleInput={'Precio Unitario'}
+                    typeKeyBoard={'numeric'}
+                    placehol={'Introduce el preción'}
                 />
                 <TouchableHighlight
                     style={styles.button}
@@ -121,7 +104,7 @@ const NewNote = ({ route }) => {
                         <Text style={styles.textButton}>Agregar</Text>
                     </View>
                 </TouchableHighlight>
-            </View>
+            </ScrollView>
         </>
     )
 }
@@ -129,17 +112,6 @@ const NewNote = ({ route }) => {
 const styles = StyleSheet.create({
     formulario: {
         margin: 20
-    },
-    label: {
-        fontSize: 18,
-        marginBottom: 5,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 15,
     },
     button: {
         width: "100%",

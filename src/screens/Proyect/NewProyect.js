@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, StatusBar, TouchableHighlight, Button, TextInput, StyleSheet } from "react-native";
+import {View, Text, StatusBar, TouchableHighlight, Button, TextInput, StyleSheet, ScrollView} from "react-native";
 import { addNewProyects } from "../../utils/base/db";
 import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from '../../context/ThemeContext';
+import Input from "../../components/Note/Input";
 
 const NewProyect = () => {
     const { getAllProyects } = useTheme();
@@ -24,9 +25,9 @@ const NewProyect = () => {
     const addProyect = () => {
         if (!nameProyect || !nameClient || !address) {
             Toast.show({
-                type: ALERT_TYPE.DANGER,
-                title: 'Error',
-                textBody: 'Llena todo el formulario',
+                type: ALERT_TYPE.WARNING,
+                title: 'Avertencia',
+                textBody: 'Llena todos los campos del formulario',
                 autoClose: 2000
             });
             return;
@@ -39,42 +40,48 @@ const NewProyect = () => {
         if (result) {
             Toast.show({
                 type: ALERT_TYPE.SUCCESS,
-                title: 'Good',
-                textBody: 'Se a registrado tu proyecto',
+                title: 'Agregado',
+                textBody: 'Se a registrado un nuevo proyecto',
                 autoClose: 3000
             })
-            setNameProject('');
-            setNameClient('');
-            setAddress('');
             getAllProyects();
             setTimeout(()=>{
+                setNameProject('');
+                setNameClient('');
+                setAddress('');
                 navigation.navigate("HomeProyects")
-            },3000)
+            },200)
             return;
         }
     }
 
     return (
         <>
-            <View style={styles.container}>
+            <ScrollView
+                style={styles.container}
+                showsVerticalScrollIndicator={false}
+            >
                 <StatusBar style={'light-content'} backgroundColor="#094b4d" />
                 <Text style={styles.label}>Nombre del Proyecto:</Text>
-                <TextInput
-                    style={styles.input}
+                <Input
                     value={nameProyect}
-                    onChangeText={setNameProject}
+                    setValue={setNameProject}
+                    titleInput={'Nombre del Proyecto'}
+                    placehol={''}
                 />
                 <Text style={styles.label}>Nombre del Cliente:</Text>
-                <TextInput
-                    style={styles.input}
+                <Input
                     value={nameClient}
-                    onChangeText={setNameClient}
+                    setValue={setNameClient}
+                    titleInput={'Nombre del Cliente'}
+                    placehol={''}
                 />
                 <Text style={styles.label}>Dirección:</Text>
-                <TextInput
-                    style={styles.input}
+                <Input
                     value={address}
-                    onChangeText={setAddress}
+                    setValue={setAddress}
+                    titleInput={'Dirección'}
+                    placehol={''}
                 />
                 <TouchableHighlight
                     style={styles.button}
@@ -84,7 +91,7 @@ const NewProyect = () => {
                         <Text style={styles.textButton}>Agregar</Text>
                     </View>
                 </TouchableHighlight>
-            </View>
+            </ScrollView>
         </>
     )
 }
@@ -96,13 +103,6 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 18,
         marginBottom: 5,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 15,
     },
     button: {
         width: "100%",

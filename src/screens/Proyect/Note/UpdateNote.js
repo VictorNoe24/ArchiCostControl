@@ -4,6 +4,7 @@ import { StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-nat
 import { useNote } from "../../../context/NoteContext";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 import { updateInfo } from "../../../utils/base/db";
+import Input from "../../../components/Note/Input";
 
 const UpdateNote = ({ route }) => {
     const params = route.params;
@@ -16,24 +17,6 @@ const UpdateNote = ({ route }) => {
     const [pu, setPU] = useState('');
     const [importe, setImporte] = useState('');
 
-    const sumCantidad = (text) => {
-        setCantidad(text)
-        if ((pu !== 0.0)) {
-            let result = text * pu;
-            result = result.toFixed(2)
-            setImporte(result)
-        }
-    }
-
-    const sumPU = (text) => {
-        setPU(text)
-        if ((cantidad !== 0.0)) {
-            let result = cantidad * text;
-            result = result.toFixed(2);
-            setImporte(result)
-        }
-    }
-
     const handleAgregar = () => {
         if (!concepto || !unidad || !cantidad || !pu || !importe) {
             Toast.show({
@@ -45,6 +28,9 @@ const UpdateNote = ({ route }) => {
             return;
         };
 
+        let sum = cantidad * pu;
+        sum = sum.toFixed(2)
+        console.log(sum)
 
         const result = updateInfo(
             params.data.id,
@@ -52,7 +38,7 @@ const UpdateNote = ({ route }) => {
             unidad,
             parseFloat(cantidad),
             parseFloat(pu),
-            parseFloat(importe),
+            parseFloat(sum),
         );
 
         if (result) {
@@ -62,16 +48,16 @@ const UpdateNote = ({ route }) => {
                 textBody: 'Se a actualizado correctamente',
                 autoClose: 3000
             })
-            setConcepto('');
-            setUnidad('');
-            setCantidad(0.0);
-            setPU(0.0);
-            setImporte(0.0);
             getNote(params.data.KeyIdProyect);
             sumImport(params.data.KeyIdProyect);
             setTimeout(() => {
+                setConcepto('');
+                setUnidad('');
+                setCantidad('');
+                setPU('');
+                setImporte('');
                 navigation.navigate("ListNote", {id: params.data.KeyIdProyect})
-            }, 3000)
+            }, 200)
             return;
         }
     };
@@ -91,39 +77,33 @@ const UpdateNote = ({ route }) => {
     return (
         <>
             <View style={styles.formulario}>
-                <Text style={styles.label}>Concepto:</Text>
-                <TextInput
-                    editable
-                    multiline
-                    style={[styles.input, {height: 150}]}
+                <Input
                     value={concepto}
-                    onChangeText={text => setConcepto(text)}
+                    setValue={setConcepto}
+                    size={150}
+                    titleInput={'Concepto'}
+                    placehol={'Introduce el contexto'}
+                    multilineState={true}
                 />
-                <Text style={styles.label}>Unidad:</Text>
-                <TextInput
-                    style={styles.input}
+                <Input
                     value={unidad}
-                    onChangeText={text => setUnidad(text)}
+                    setValue={setUnidad}
+                    titleInput={'unidad'}
+                    placehol={'Introduce la unidad de medida'}
                 />
-                <Text style={styles.label}>Cantidad:</Text>
-                <TextInput
-                    style={styles.input}
+                <Input
                     value={cantidad}
-                    onChangeText={text => sumCantidad(text)}
-                    keyboardType="numeric"
+                    setValue={setCantidad}
+                    titleInput={'Cantidades'}
+                    typeKeyBoard={'numeric'}
+                    placehol={'Introduce las unidades del producto'}
                 />
-                <Text style={styles.label}>PU:</Text>
-                <TextInput
-                    style={styles.input}
+                <Input
                     value={pu}
-                    onChangeText={text => sumPU(text)}
-                    keyboardType="numeric"
-                />
-                <Text style={styles.label}>Importe:</Text>
-                <TextInput
-                    style={styles.input}
-                    value={importe}
-                    keyboardType="numeric"
+                    setValue={setPU}
+                    titleInput={'Precio Unitario'}
+                    typeKeyBoard={'numeric'}
+                    placehol={'Introduce el preción'}
                 />
                 <TouchableHighlight
                     style={styles.button}

@@ -79,7 +79,7 @@ const Cards = ({ id }) => {
                                 underlayColor="#F7F6F6"
                                 onPress={() => deleteNote(info.id)}
                             >
-                                <Text style={styles.textDelete}>Eliinar</Text>
+                                <Text style={styles.textDelete}>Eliminar</Text>
                             </TouchableHighlight>
                         </View>
                     </View>

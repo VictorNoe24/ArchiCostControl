@@ -46,10 +46,8 @@ const Cards = ({ searchPhrase, proyects, isLoading }) => {
                     <View>
                         <View style={styles.row}>
                             <Text style={styles.textDate}>{formateDate(proyect.Date)}</Text>
-                            <TouchableOpacity
-                                onPress={() => console.log("Hola gai")}
-                            >
-                                <SimpleLineIcons name="options-vertical" size={24} color="black" />
+                            <TouchableOpacity>
+                                {false && (<SimpleLineIcons name="options-vertical" size={24} color="black"/>)}
                             </TouchableOpacity>
                         </View>
                         <Text style={styles.textProyect}>{proyect.NameProyect}</Text>

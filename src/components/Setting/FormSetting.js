@@ -68,6 +68,12 @@ const FormSetting = () => {
                 getUser()
                 saveUser(userData)
                 getUserTest(email);
+                Toast.show({
+                    type: ALERT_TYPE.SUCCESS,
+                    title: 'Actualizado',
+                    textBody: 'Se a actualizado tu información',
+                    autoClose: 3000
+                })
                 navigation.navigate('HomeSettings')
             }
         }
@@ -142,7 +148,10 @@ const FormSetting = () => {
     }, []);
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.container}
+        >
             <View style={styles.containerImage}>
                 {imageUri
                     ? <Image source={{ uri: imageUri }} style={styles.profileImage} />
