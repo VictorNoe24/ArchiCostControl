@@ -56,14 +56,14 @@ const Cards = ({ id }) => {
                             </View>
                             <View>
                                 <Text style={styles.textTh}>Cantidades</Text>
-                                <Text style={styles.textTd}>{info.Cantidad}</Text>
+                                <Text style={styles.textTd}>{info.Cantidad.toFixed(2)}</Text>
                             </View>
                             <View>
                                 <Text style={styles.textTh}>Importe</Text>
-                                <Text style={styles.textTd}>${info.PU}</Text>
+                                <Text style={styles.textTd}>${info.PU.toFixed(2)}</Text>
                             </View>
                         </View>
-                        <Text style={styles.texTotal}>Total: {info.Importe}</Text>
+                        <Text style={styles.texTotal}>Total: {info.Importe.toFixed(2)}</Text>
                         <View style={styles.col}>
                             <TouchableHighlight
                                 style={styles.update}
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     },
     texTotal: {
         fontSize: 25,
-        alignSelf: 'flex-end',
+        alignSelf: 'flex-start',
         fontWeight: 'bold',
         color: '#094b4d'
     },

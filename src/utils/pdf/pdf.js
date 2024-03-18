@@ -1,16 +1,19 @@
-import { Asset } from "expo-asset";
 import {useAuth} from "../../context/AuthContext";
-import {manipulateAsync} from "expo-image-manipulator";
 
-async function pdfHtml1 (dataProyect, datas, total){
+const pdfHtml = (dataProyect, datas, total) => {
 
     const { dataUser } = useAuth();
-    const asset = Asset.fromModule(require('../../../assets/logo.png'));
-    const image = await manipulateAsync(asset.localUri ?? asset.uri, [], { base64: true });
     const currentDate = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = currentDate.toLocaleDateString('es-ES', options);
 
+    const formatCurrency = (amount) => {
+        const parts = amount.toFixed(2).toString().split('.');
+        const integerPart = parts[0];
+        const decimalPart = parts[1];
+        const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return '$' + formattedIntegerPart + '.' + decimalPart;
+    }
     return `
     <!DOCTYPE html>
     <html lang="es">
@@ -36,7 +39,7 @@ async function pdfHtml1 (dataProyect, datas, total){
             }
 
             .header {
-                text-align: center;
+                text-align: justify;
                 margin-bottom: 20px;
             }
 
@@ -99,8 +102,7 @@ async function pdfHtml1 (dataProyect, datas, total){
             }
 
             .total {
-                margin-top: 20px;
-                float: right;
+                text-align: end;
                 font-size: 24px;
                 font-weight: bold;
                 color: #094b4d;
@@ -112,7 +114,7 @@ async function pdfHtml1 (dataProyect, datas, total){
     <div class="container">
         <div class="header">
             <div class="logo-container">
-                <img src="data:image/jpeg;base64,${image.base64}" alt="Logo de la empresa">
+                <img src="https://efavhov.stripocdn.email/content/guids/CABINET_7e9d1b9fef7c0d398bf6bcb4e7fc130e2e670e4d793fc60eecbbcf986fcbb699/images/logo.png" alt="Logo de la empresa">
                 <div>
                     <h2>Presupuesto</h2>
                     ${dataProyect.map(data =>`
@@ -143,16 +145,16 @@ async function pdfHtml1 (dataProyect, datas, total){
             <tbody>
                 ${datas.map(dat => `
                     <tr>
-                        <td>${dat.Concepto}</td>
+                        <td style="text-align: start">${dat.Concepto}</td>
                         <td>${dat.Unidad}</td>
-                        <td>${dat.Cantidad}</td>
-                        <td>$${dat.PU}</td>
-                        <td>$${dat.Importe}</td>
+                        <td>${parseFloat(dat.Cantidad).toFixed(2)}</td>
+                        <td>${formatCurrency(parseFloat(dat.PU))}</td>
+                        <td>${formatCurrency(parseFloat(dat.Importe))}</td>
                     </tr>`).join('')}
             </tbody>
         </table>
         <div class="total">
-            <p><strong>Total:</strong> $${parseFloat(total).toFixed(2)}</p>
+            <p><strong>Total:</strong> ${formatCurrency(parseFloat(total))}</p>
         </div>
     </div>
 
@@ -161,4 +163,6 @@ async function pdfHtml1 (dataProyect, datas, total){
     `;
 }
 
-export default pdfHtml1;
+module.exports = {
+    pdfHtml
+};
