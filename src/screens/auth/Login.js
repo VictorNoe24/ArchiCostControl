@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 import {ALERT_TYPE, Toast} from "react-native-alert-notification";
-import {updateUser} from "../../utils/base/db";
+import {addUser} from "../../utils/base/db";
 import {useAuth} from "../../context/AuthContext";
 import {useNavigation} from "@react-navigation/native";
 
-const FormSetting = () => {
+const Login = () => {
 
-    const { saveUser, dataUser, getUser, getUserTest} = useAuth();
-    const navigation = useNavigation();
+    const { saveUser } = useAuth();
+    const navigation = useNavigation()
 
     const [imageUri, setImageUri] = useState(null);
     const [phone, setPhone] = useState('');
@@ -37,6 +36,7 @@ const FormSetting = () => {
             aspect: [4, 4],
             quality: 1,
         });
+        console.log(result.assets[0].uri);
         if (!result.canceled) {
             setImageUri(result.assets[0].uri);
         }
@@ -54,7 +54,7 @@ const FormSetting = () => {
             return;
         }
         if(!nameState && !lastNameState && !surnameState && !phoneState && !emailState){
-            const result = updateUser( name,lastName, surname, imageUri, email);
+            const result = addUser(parseInt(phone), email, name,lastName, surname, imageUri);
             if (result) {
                 setState(false)
                 const userData = {
@@ -65,10 +65,8 @@ const FormSetting = () => {
                     surname: surname,
                     image: imageUri,
                 }
-                getUser()
                 saveUser(userData)
-                getUserTest(email);
-                navigation.navigate('HomeSettings')
+                navigation.navigate('Finish')
             }
         }
         setState(false);
@@ -81,6 +79,7 @@ const FormSetting = () => {
         } else {
             setNameState(true);
         }
+
     }
 
     const validateLastName = (target) => {
@@ -118,28 +117,6 @@ const FormSetting = () => {
             setEmailState(true)
         }
     }
-    const validateUrl = async (url) => {
-        try {
-            const fileInfo = await FileSystem.getInfoAsync(url);
-            if (fileInfo.exists && !fileInfo.isDirectory) {
-                setImageUri(url);
-            } else {
-                setImageUri(null)
-            }
-        } catch (error) {
-            console.log('Error al valida imagen:', error);
-            return false;
-        }
-    }
-
-    useEffect(() => {
-        validateName(dataUser[0].Name)
-        validateEmail(dataUser[0].Email)
-        validatePhone(dataUser[0].Phone.toString())
-        validateSurname(dataUser[0].Surname)
-        validateLastName(dataUser[0].LastName)
-        validateUrl(dataUser[0].Image)
-    }, []);
 
     return (
         <ScrollView style={styles.container}>
@@ -197,22 +174,28 @@ const FormSetting = () => {
                 { surnameState && <Text style={styles.validate}>Solo tiene que contener letras</Text>}
             </View>
 
-            <View style={[styles.inputContainer, {backgroundColor: "#bdbdbd"}]}>
+            <View style={styles.inputContainer}>
                 <Text style={styles.inputText}>Telefono</Text>
-                <Text
+                <TextInput
                     style={styles.input}
                     placeholder={'Introduce tu telefono'}
-                >{phone}</Text>
+                    keyboardType="number-pad"
+                    maxLength={10}
+                    onChangeText={(event)=> validatePhone(event)}
+                    value={phone}
+                />
                 { phoneState && <Text style={styles.validate}>Solo tiene que contener números</Text>}
             </View>
 
-            <View style={[styles.inputContainer, {backgroundColor: "#bdbdbd"}]}>
+            <View style={styles.inputContainer}>
                 <Text style={styles.inputText}>Correo electronico</Text>
-                <Text
+                <TextInput
                     style={styles.input}
                     placeholder={'Introduce tu correo electronico'}
                     keyboardType="email-address"
-                >{email}</Text>
+                    onChangeText={(event)=> validateEmail(event)}
+                    value={email}
+                />
                 { emailState && <Text style={styles.validate}>El correo solo puede ser gmail o hotmail</Text>}
             </View>
 
@@ -224,8 +207,9 @@ const FormSetting = () => {
                 <View>
                     {
                         state
-                            ? (<Text style={styles.saveText}>Guardando información...</Text>) : (<Text style={styles.saveText}>Guardar cambios</Text>)
+                        ? (<Text style={styles.saveText}>Guardando información...</Text>) : (<Text style={styles.saveText}>Guardar cambios</Text>)
                     }
+
                 </View>
             </TouchableOpacity>
         </ScrollView>
@@ -233,6 +217,12 @@ const FormSetting = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        height: '100%',
+        width: '100%',
+        padding: 20,
+        backgroundColor: '#fff',
+    },
     inputContainer: {
         height: "auto",
         marginTop: 20,
@@ -300,4 +290,4 @@ const styles = StyleSheet.create({
         color: 'red',
     }
 })
-export default FormSetting;
+export default Login;

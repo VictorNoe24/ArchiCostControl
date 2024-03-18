@@ -1,12 +1,30 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { View, Text, StatusBar, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Octicons, SimpleLineIcons, Feather } from '@expo/vector-icons';
 import { ALERT_TYPE, Dialog } from "react-native-alert-notification";
 import { useNavigation } from "@react-navigation/native";
+import {useAuth} from "../../context/AuthContext";
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
 
 const HomeSettings = () => {
 
     const navigation = useNavigation();
+    const { dataUser } = useAuth();
+
+    const validateUrl = async (url) => {
+        try {
+            const fileInfo = await FileSystem.getInfoAsync(url);
+            if (fileInfo.exists && !fileInfo.isDirectory) {
+                setImageUri(url);
+            } else {
+                setImageUri(null)
+            }
+        } catch (error) {
+            console.log('Error al valida imagen:', error);
+            return false;
+        }
+    }
 
     const noAccess = () => {
         Dialog.show({
@@ -29,15 +47,12 @@ const HomeSettings = () => {
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <Image
-                        style={styles.image}
-                        source={require('../../utils/img/logo.png')}
-                    />
+                    <Image source={{ uri: dataUser[0].Image }} style={styles.image} />
                 </View>
                 <View>
                     <View style={styles.textNameRow}>
                         <Text style={{ fontSize: 20 }}>Hola, </Text>
-                        <Text style={styles.textName}>Noe Flores Aviles</Text>
+                        <Text style={styles.textName}>{`${dataUser[0].Name} ${dataUser[0].LastName} ${dataUser[0].Surname}`}</Text>
                     </View>
                     <Text style={{ textAlign: 'center' }}>Bienvenido de nuevo</Text>
                 </View>

@@ -18,7 +18,7 @@ const ListNote = ({ route }) => {
 
     if (state) {
         return (
-            <View s tyle={styles.state}>
+            <View style={styles.state}>
                 <Text style={styles.row}>
                     <MaterialCommunityIcons name="file-document-multiple-outline" size={150} color="#c7c9ca"/>
                 </Text>

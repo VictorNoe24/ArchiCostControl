@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MaterialIcons } from '@expo/vector-icons';
+import {useAuth} from "../context/AuthContext";
 
 //Import screen the Proyects
 import HomeProyect from "../screens/Proyect/HomeProyect";
@@ -16,12 +17,18 @@ import NoteStack from "../components/Stack/NoteStack";
 import HomeSttings from "../screens/Setting/HomeSttings";
 import Profile from "../screens/Setting/EditUser/Profile";
 
+//Import screen the login
+import Login from "../screens/auth/Login";
+import Welcome from "../screens/auth/Welcome";
+import Finish from "../screens/auth/Finish";
+
 const HomeStackNavigator = createNativeStackNavigator();
 const SettingStackNavigator = createNativeStackNavigator();
+const AuthStackNavigation = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 //Esta es la navegación de la tap proyects
-function MyStackProyects() {
+const MyStackProyects = () => {
     return (
         <HomeStackNavigator.Navigator
             initialRouteName='HomeProyects'
@@ -75,7 +82,8 @@ function MyStackProyects() {
 }
 
 //Esta es la navegacion de la tap de setting
-function MyStackSettings() {
+const MyStackSettings = () => {
+
     return (
         <SettingStackNavigator.Navigator
             initialRouteName='HomeSttings'
@@ -101,7 +109,7 @@ function MyStackSettings() {
 }
 
 //Tap de navegación
-function MyTabs() {
+const MyTabs = () => {
     return (
         <Tab.Navigator
             initialRouteName='ListProyects'
@@ -140,10 +148,50 @@ function MyTabs() {
     )
 }
 
+const AuthAplication = () => {
+
+    const { state } = useAuth();
+
+    return (
+        <AuthStackNavigation.Navigator
+            screenOptions={{
+                headerShown: false,
+                tabBarActiveTintColor: '#094b4d',
+            }}
+        >
+            { state == null
+                ? (
+                    <>
+                        <AuthStackNavigation.Screen
+                            name='Welcome'
+                            component={Welcome}
+                        />
+                        <AuthStackNavigation.Screen
+                            name='Login'
+                            component={Login}
+                        />
+                        <AuthStackNavigation.Screen
+                            name='Finish'
+                            component={Finish}
+                        />
+                    </>
+                )
+                :
+                (
+                    <AuthStackNavigation.Screen
+                        name='Home'
+                        component={MyTabs}
+                    />
+                )
+            }
+        </AuthStackNavigation.Navigator>
+    )
+}
+
 export default function Navigation() {
     return (
         <NavigationContainer>
-            <MyTabs/>
+            <AuthAplication/>
         </NavigationContainer>
     )
 }

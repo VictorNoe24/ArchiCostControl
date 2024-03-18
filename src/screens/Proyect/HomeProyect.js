@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { View, StatusBar, StyleSheet, ScrollView, Text } from "react-native";
-import { createTableInfoProyects, createTableProyects, createTableCategory, createTableUser, createTableUserCategory} from "../../utils/base/db";
+import { createTableInfoProyects, createTableProyects} from "../../utils/base/db";
 import ButtonNew from "../../components/Proyect/ButtonNew";
 import Cards from "../../components/Proyect/Cards";
 import SearchBar from "../../components/Proyect/SearchBar";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
+import {useAuth} from "../../context/AuthContext";
 
 const HomeProyects = () => {
+    const {getUser, getStore} = useAuth();
     const { data, state, getAllProyects } = useTheme();
     const [searchPhrase, setSearchPhrase] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [clicked, setClicked] = useState(false);
 
     useEffect(() => {
+        getUser()
+        getStore()
         createTableProyects();
         createTableInfoProyects();
         getAllProyects();
-        createTableCategory(); 
-        createTableUser();
-        createTableUserCategory();
         setIsLoading(false);
     },[])
 

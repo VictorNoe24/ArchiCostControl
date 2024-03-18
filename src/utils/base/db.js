@@ -43,33 +43,12 @@ const createTableInfoProyects = () => {
     }
 };
 
-const createTableUser = () => {
-    try {
-        db.transaction(tx => {
-            tx.executeSql(
-                `CREATE TABLE IF NOT EXISTS USERS (
-                    id INTERGER PRIMARY KEY AUTOINCREMENT,
-                    Phone LONG UNIQUE,
-                    Email VARCHAR(100) UNIQUE,
-                    Name VARCHAR(45),
-                    LastName VARCHAR(36),
-                    Surname VARCHAR(36),
-                    Password VARCHAR(15),
-                    Image TEXT,
-                )`
-            )
-        })
-    } catch (error) {
-        console.error('Erroe al crear la tabla USER:', error);
-    }
-}
-
 const createTableCategory = () => {
     try {
         db.transaction(tx => {
             tx.executeSql(
                 `CREATE TABLE IF NOT EXISTS CATEGORIES (
-                    id INTERGER PRIMARY KEY AUTOINCREMENT,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT
                 )`
             )
@@ -84,11 +63,11 @@ const createTableUserCategory = () => {
         db.transaction(tx => {
             tx.executeSql(
                 `CREATE TABLE IF NOT EXISTS CATEGORIES (
-                    id INTERGER PRIMARY KEY AUTOINCREMENT,
-                    id_user INTERGER,
-                    id_category INTERGER,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_user INTEGER,
+                    id_category INTEGER,
                     FOREIGN KEY (id_user) REFERENCES USERS(id),
-                    FOREIGN KEY (id_categORY) REFERENCES CATEGORIES(id)
+                    FOREIGN KEY (id_category) REFERENCES CATEGORIES(id)
                 )`
             )
         })
@@ -96,6 +75,71 @@ const createTableUserCategory = () => {
         console.log('Error al crear la tabla CATEGORIES:', error);
     }
 }
+
+const createTableUser = () => {
+    try {
+        db.transaction(tx => {
+            tx.executeSql(
+                `CREATE TABLE IF NOT EXISTS USERS (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Phone LONG UNIQUE,
+                    Email VARCHAR(100) UNIQUE,
+                    Name VARCHAR(45),
+                    LastName VARCHAR(36),
+                    Surname VARCHAR(36),
+                    Password VARCHAR(15),
+                    Image TEXT
+                )`
+            )
+        })
+    } catch (error) {
+        console.error('Erroe al crear la tabla USER:', error);
+    }
+}
+
+const addUser = (phone, email, name, lastname, surname, image) => {
+    try {
+        db.transaction(tx => {
+            tx.executeSql(
+                `INSERT INTO USERS (Phone, Email, Name, LastName, Surname, Image) VALUES (?, ?, ?, ?, ?, ?)`,
+                [phone, email, name, lastname, surname, image],
+                (_, result) => {
+                    console.log(result.insertId)
+                },
+                (_, error) => {
+                    console.log(error)
+                }
+             )
+        });
+        return true;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}
+
+const updateUser = (name, lastname, surname, image, email) => {
+    try {
+        db.transaction(tx => {
+            tx.executeSql(
+
+                `UPDATE USERS SET Name = ?, LastName = ?, Surname = ?, Image = ? WHERE Email = ?`,
+                [name, lastname, surname, image, email],
+                (_, result) => {
+
+                },
+                (_, error) => {
+                    console.log(error)
+                }
+            )
+        });
+        return true;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+}
+
 
 const addNewProyects = (nameProyect, date, nameClient, address) => {
     try {
@@ -187,5 +231,7 @@ export {
     addNewInfo,
     deleteInfoId,
     updateInfo,
+    addUser,
+    updateUser,
     db,
 };
