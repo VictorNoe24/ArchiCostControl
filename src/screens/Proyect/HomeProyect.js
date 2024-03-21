@@ -7,6 +7,7 @@ import SearchBar from "../../components/Proyect/SearchBar";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 import {useAuth} from "../../context/AuthContext";
+import NotResult from "../../components/Proyect/NotResult";
 
 const HomeProyects = () => {
     const {getUser, getStore} = useAuth();
@@ -14,6 +15,7 @@ const HomeProyects = () => {
     const [searchPhrase, setSearchPhrase] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [clicked, setClicked] = useState(false);
+    const [status, setStatus] = useState(false)
 
     useEffect(() => {
         getUser()
@@ -46,8 +48,11 @@ const HomeProyects = () => {
                     setSearchPhrase={setSearchPhrase}
                     clicked={clicked}
                     setClicked={setClicked}
+                    data={data}
+                    setStatus={setStatus}
                 />
             </View>
+            { status && <NotResult/>}
             <ScrollView 
                 style={styles.rowCard}
                 showsVerticalScrollIndicator={false}
@@ -59,7 +64,7 @@ const HomeProyects = () => {
                     proyects={data}
                 />
             </ScrollView>
-            <ButtonNew/>
+            { !clicked && <ButtonNew/>}
         </View>
     )
 }
