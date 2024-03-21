@@ -67,9 +67,9 @@ const HomeSettings = () => {
                 </View>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => noAccess()}
+                onPress={() => navigation.navigate('ExportImport')}
             >
-                <View style={styles.card} onPress={() => console.log('Lo sentimos :(')}>
+                <View style={styles.card}>
                     <Octicons style={{ marginRight: '-15%' }} name="repo-template" size={30} color="black" />
                     <Text style={styles.textCard}>Exportar y importar</Text>
                     <SimpleLineIcons name="lock" size={24} color="black" />

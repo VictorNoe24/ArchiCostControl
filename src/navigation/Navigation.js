@@ -16,6 +16,7 @@ import NoteStack from "../components/Stack/NoteStack";
 //Import screen the Settings
 import HomeSttings from "../screens/Setting/HomeSttings";
 import Profile from "../screens/Setting/EditUser/Profile";
+import ExportImport from "../screens/Setting/ExportImport/ExportImport";
 
 //Import screen the login
 import Login from "../screens/auth/Login";
@@ -101,6 +102,14 @@ const MyStackSettings = () => {
                 component={Profile}
                 options={{
                     headerTitle: 'Perfil',
+                    headerShown: true,
+                }}
+            />
+            <SettingStackNavigator.Screen
+                name='ExportImport'
+                component={ExportImport}
+                options={{
+                    headerTitle: 'Exportar y Importar',
                     headerShown: true,
                 }}
             />
