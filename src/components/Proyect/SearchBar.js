@@ -2,7 +2,18 @@ import React from "react";
 import { Feather, Entypo } from "@expo/vector-icons";
 import { StyleSheet, TextInput, View, Keyboard, TouchableOpacity, Text } from "react-native";
 
-const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
+const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked, data, setStatus }) => {
+
+    const onSearch = (name) => {
+        setSearchPhrase(name)
+        const result = data.filter(data => data.NameProyect.toLowerCase().includes(name.toLowerCase()));
+        if (result.length == 0) {
+            return setStatus(true)
+        }
+        return setStatus(false)
+
+    }
+
     return (
         <View style={styles.container}>
             <View
@@ -22,9 +33,12 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
                     style={styles.input}
                     placeholder="Buscar"
                     value={searchPhrase}
-                    onChangeText={setSearchPhrase}
+                    onChangeText={value => onSearch(value)}
                     onFocus={() => {
                         setClicked(true);
+                    }}
+                    onBlur={() => {
+                        setClicked(false);
                     }}
                 />
                 {clicked && (
