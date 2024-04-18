@@ -7,11 +7,15 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked, data, s
     const onSearch = (name) => {
         setSearchPhrase(name)
         const result = data.filter(data => data.NameProyect.toLowerCase().includes(name.toLowerCase()));
-        if (result.length == 0) {
+        if (result.length === 0) {
             return setStatus(true)
         }
         return setStatus(false)
+    }
 
+    const onClearAll = () => {
+        setSearchPhrase("")
+        setStatus(false)
     }
 
     return (
@@ -43,7 +47,7 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked, data, s
                 />
                 {clicked && (
                     <Entypo name="cross" size={20} color="black" style={{ padding: 1 }} onPress={() => {
-                        setSearchPhrase("")
+                        onClearAll()
                     }} />
                 )}
             </View>
