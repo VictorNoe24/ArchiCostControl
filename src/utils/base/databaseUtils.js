@@ -1,3 +1,4 @@
+import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system';
 import { db } from './db';
 import {ALERT_TYPE, Toast} from "react-native-alert-notification";
@@ -23,16 +24,18 @@ const successAlert = (message) => {
 }
 const exportarBaseDeDatos = async () => {
     try {
-        console.log(rutaArchivoExportado)
-        console.log(db._db._name)
+        console.log(db)
+        db._db._db.closed();
         await FileSystem.copyAsync({
             from: db._db._name,
             to: rutaArchivoExportado,
         });
+        db._db._db = SQLite.openDatabase(db._db._name);
         successAlert('exportada')
     } catch (error) {
         errorAlert('exportar')
-        console.error('Error al exportar la base de datos:', error);    }
+        console.error('Error al exportar la base de datos:', error);
+    }
 };
 
 const importarBaseDeDatos = async () => {
