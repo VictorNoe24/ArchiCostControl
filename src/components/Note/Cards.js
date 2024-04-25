@@ -10,6 +10,14 @@ const Cards = ({ id }) => {
     const navigation = useNavigation();
     const { data, getNote } = useNote();
 
+    const formatCurrency = (amount) => {
+        const parts = amount.toFixed(2).toString().split('.');
+        const integerPart = parts[0];
+        const decimalPart = parts[1];
+        const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return '$' + formattedIntegerPart + '.' + decimalPart;
+    }
+
     const deleteNote = (idDelete) => {
         Dialog.show({
             type: ALERT_TYPE.WARNING,
@@ -60,10 +68,10 @@ const Cards = ({ id }) => {
                             </View>
                             <View>
                                 <Text style={styles.textTh}>Importe</Text>
-                                <Text style={styles.textTd}>${info.PU.toFixed(2)}</Text>
+                                <Text style={styles.textTd}>{formatCurrency(parseFloat(info?.PU))}</Text>
                             </View>
                         </View>
-                        <Text style={styles.texTotal}>Total: {info.Importe.toFixed(2)}</Text>
+                        <Text style={styles.texTotal}>Total: {formatCurrency(parseFloat(info?.Importe))}</Text>
                         <View style={styles.col}>
                             <TouchableHighlight
                                 style={styles.update}

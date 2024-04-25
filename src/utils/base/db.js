@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabase('archicostcontrol-test1.db');
+const db = SQLite.openDatabase('archicostcontrol-TEST.db');
 
 const createTableProyects = () => {
     try {

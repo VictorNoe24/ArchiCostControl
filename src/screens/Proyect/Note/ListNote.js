@@ -4,15 +4,18 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNote } from "../../../context/NoteContext";
 import ButtonNew from "../../../components/Note/ButtonNew";
 import Cards from "../../../components/Note/Cards";
+import Total from "../../../components/Note/Total";
 
 
 const ListNote = ({ route }) => {
     const params = route.params;
     const { state, importe, getNote, sumImport, getProyectId } = useNote();
+    const [status, setStatus] = useState(false)
     useEffect(() => {
         getNote(params.id)
         sumImport(params.id);
         getProyectId(params.id);
+        setStatus(true)
     }, [])
     
 
@@ -30,24 +33,23 @@ const ListNote = ({ route }) => {
                 />
             </View>
         )
-    };
+    }
 
     return (
-        <>
-            <View style={styles.container}>
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                >
-                    <Cards
-                        id={params.id}
-                    />
-                </ScrollView>
-                <ButtonNew
+        <View style={styles.container}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+            >
+                <Cards
                     id={params.id}
-                    sizeB={"90%"}
                 />
-            </View>
-        </>
+            </ScrollView>
+            { status && <Total total={importe}/>}
+            <ButtonNew
+                id={params.id}
+                sizeB={"90%"}
+            />
+        </View>
     );
 }
 

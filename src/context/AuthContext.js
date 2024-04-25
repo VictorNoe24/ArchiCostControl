@@ -85,6 +85,7 @@ export const AuthProvider = ({children}) => {
     }
 
     useEffect(() => {
+        //recet()
         getData();
         console.log(state)
         createTableUser();
