@@ -59,7 +59,7 @@ const MyStackProyects = () => {
                     headerRight : () => (
                         <NoteStack/>
                     )
-                    
+
                 }}
             />
             <HomeStackNavigator.Screen
@@ -150,7 +150,7 @@ const MyTabs = () => {
                     ),
                     headerShown: false,
                     tabBarActiveBackgroundColor: '#094b4d',
-                    tabBarActiveTintColor: '#fff'
+                    tabBarActiveTintColor: '#fff',
                 }}
             />
         </Tab.Navigator>

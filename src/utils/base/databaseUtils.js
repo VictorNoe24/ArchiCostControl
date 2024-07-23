@@ -3,7 +3,7 @@ import * as FileSystem from 'expo-file-system';
 import { db } from './db';
 import {ALERT_TYPE, Toast} from "react-native-alert-notification";
 
-const rutaArchivoExportado = FileSystem.documentDirectory + 'archicostcontrol-test1.db';
+const rutaArchivoExportado = FileSystem.documentDirectory + 'archicostcontrol-test2.db';
 
 const errorAlert = (message) => {
     Toast.show({

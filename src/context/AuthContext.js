@@ -1,7 +1,6 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {createTableCategory, createTableUser, createTableUserCategory, db} from "../utils/base/db";
-import {log} from "expo/build/devtools/logger";
 
 const AuthContext = createContext();
 
@@ -15,7 +14,7 @@ export const AuthProvider = ({children}) => {
             const jsonValue = JSON.stringify(value);
             await AsyncStorage.setItem('auth', jsonValue);
         } catch (e) {
-            // saving error
+            console.error(e)
         }
     };
 
@@ -85,6 +84,7 @@ export const AuthProvider = ({children}) => {
     }
 
     useEffect(() => {
+        //recet()
         getData();
         console.log(state)
         createTableUser();
