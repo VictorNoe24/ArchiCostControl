@@ -40,7 +40,10 @@ const Cards = ({ searchPhrase, proyects, isLoading }) => {
             {filterProyectsByName().map((proyect) => (
                 <TouchableOpacity
                     key={proyect.id}
-                    onPress={() => navigation.navigate("ListNote", { id: proyect.id })}
+                    onPress={() => navigation.navigate("NewProyect", {
+                        screen: 'ListNote',
+                        params: { id: proyect.id }
+                    })}
                     style={styles.container}
                 >
                     <View>

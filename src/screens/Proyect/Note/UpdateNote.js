@@ -17,6 +17,36 @@ const UpdateNote = ({ route }) => {
     const [pu, setPU] = useState('');
     const [importe, setImporte] = useState('');
 
+    const handlePUChange = (text) => {
+        const regex = /^\d*\.?\d{0,2}$/;
+
+        if (regex.test(text)) {
+            setPU(text);
+        } else {
+            Toast.show({
+                type: ALERT_TYPE.WARNING,
+                title: 'Advertencia',
+                textBody: 'El precio unitario debe tener como máximo dos decimales',
+                autoClose: 2000
+            });
+        }
+    };
+
+    const handleCantidadChange = (text) => {
+        const regex = /^\d*\.?\d{0,2}$/;
+
+        if (regex.test(text)) {
+            setCantidad(text);
+        } else {
+            Toast.show({
+                type: ALERT_TYPE.WARNING,
+                title: 'Advertencia',
+                textBody: 'La cantidad debe tener como máximo dos decimales',
+                autoClose: 2000
+            });
+        }
+    };
+
     const handleAgregar = () => {
         if (!concepto || !unidad || !cantidad || !pu || !importe) {
             Toast.show({
@@ -93,14 +123,14 @@ const UpdateNote = ({ route }) => {
                 />
                 <Input
                     value={cantidad}
-                    setValue={setCantidad}
+                    setValue={handleCantidadChange}
                     titleInput={'Cantidades'}
                     typeKeyBoard={'numeric'}
                     placehol={'Introduce las unidades del producto'}
                 />
                 <Input
                     value={pu}
-                    setValue={setPU}
+                    setValue={handlePUChange}
                     titleInput={'Precio Unitario'}
                     typeKeyBoard={'numeric'}
                     placehol={'Introduce el preción'}
@@ -110,7 +140,7 @@ const UpdateNote = ({ route }) => {
                     onPress={handleAgregar}
                 >
                     <View>
-                        <Text style={styles.textButton}>Agregar</Text>
+                        <Text style={styles.textButton}>Actualizar</Text>
                     </View>
                 </TouchableHighlight>
             </View>

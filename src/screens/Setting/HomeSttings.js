@@ -61,8 +61,10 @@ const HomeSettings = () => {
                 onPress={() => noAccess()}
             >
                 <View style={styles.card} onPress={() => console.log('Lo sentimos :(')}>
-                    <Octicons style={{ marginRight: '-35%' }} name="repo-template" size={30} color="black" />
-                    <Text style={styles.textCard}>Pantillas PDF</Text>
+                    <View style={styles.row}>
+                        <Octicons style={{ marginRight: 10 }} name="repo-template" size={30} color="black" />
+                        <Text style={styles.textCard}>Pantillas PDF</Text>
+                    </View>
                     <SimpleLineIcons name="lock" size={24} color="black" />
                 </View>
             </TouchableOpacity>
@@ -71,8 +73,10 @@ const HomeSettings = () => {
                 //navigation.navigate('ExportImport')
             >
                 <View style={styles.card}>
-                    <Octicons style={{ marginRight: '-15%' }} name="repo-template" size={30} color="black" />
-                    <Text style={styles.textCard}>Exportar y importar</Text>
+                    <View style={styles.row}>
+                        <Octicons style={{ marginRight: 10 }} name="repo-template" size={30} color="black" />
+                        <Text style={styles.textCard}>Exportar y importar</Text>
+                    </View>
                     <SimpleLineIcons name="lock" size={24} color="black" />
                 </View>
             </TouchableOpacity>
@@ -134,6 +138,9 @@ const styles = StyleSheet.create({
         top: '10%',
         right: '10%',
     },
+    row: {
+        flexDirection: 'row',
+    }
 })
 
 export default HomeSettings;
