@@ -140,7 +140,7 @@ const UpdateNote = ({ route }) => {
                     onPress={handleAgregar}
                 >
                     <View>
-                        <Text style={styles.textButton}>Agregar</Text>
+                        <Text style={styles.textButton}>Actualizar</Text>
                     </View>
                 </TouchableHighlight>
             </View>
