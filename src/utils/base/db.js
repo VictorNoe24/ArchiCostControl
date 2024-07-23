@@ -1,4 +1,5 @@
-import * as SQLite from 'expo-sqlite';
+
+import * as SQLite from 'expo-sqlite/legacy';
 //archicostcontrol-TEST2.db
 const db = SQLite.openDatabase('archicostcontrol-TEST2.db');
 
