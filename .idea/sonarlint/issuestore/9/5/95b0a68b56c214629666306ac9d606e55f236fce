@@ -1,0 +1,6 @@
+
+ljavascript:S1128"#Remove this unused import of 'log'.(Σ™³8υΏ­’ρ1J$da950640-3172-4a7f-bdae-4522b5b5bb4a
+rjavascript:S6774")'children' is missing in props validation(π–8φΏ­’ρ1J$005ef975-2257-429f-897c-24523254cd1c
+^javascript:S1481"6Remove the declaration of the unused 'recet' variable.(•Έµÿÿÿÿÿ8¨ε³’ρ1
+[javascript:S1854"3Remove this useless assignment to variable "recet".(•Έµÿÿÿÿÿ8ªε³’ρ1
+Τjavascript:S6481a"…The object passed as the value prop to the Context provider changes every render. To fix this consider wrapping it in a useMemo hook.(ΰ‡Ϊθόÿÿÿÿ8ψΏ­’ρ1J$fff9451e-0b2c-4d87-b894-18088acbee68
