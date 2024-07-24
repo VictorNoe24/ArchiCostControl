@@ -18,20 +18,57 @@ export const AuthProvider = ({children}) => {
         }
     };
 
-    const recet = async () => {
-        try {
-            await AsyncStorage.setItem('auth', '');
-        } catch (e) {
-            console.error(e)
-        }
-    };
-
     const getData = async () => {
         try {
             const jsonValue = await AsyncStorage.getItem('auth');
             setState(jsonValue != null ? JSON.parse(jsonValue) : null);
         } catch (e) {
             console.error(e)
+        }
+    };
+
+    const recet = async () => {
+        try {
+            db.transaction(tx => {
+                tx.executeSql(
+                    `SELECT COUNT(id) FROM USERS;`,
+                    [],
+                    (_, result) => {
+                        if (result.rows._array[0]["COUNT(id)"] > 0){
+                            db.transaction(tx => {
+                                tx.executeSql(
+                                    `SELECT * FROM USERS;`,
+                                    [],
+                                    (_, result) => {
+                                        const userData = {
+                                            phone: result.rows._array[0]["Phone"],
+                                            email: result.rows._array[0]["Email"],
+                                            name: result.rows._array[0]["Name"],
+                                            lastname: result.rows._array[0]["LastName"],
+                                            surname: result.rows._array[0]["Surname"],
+                                            image: result.rows._array[0]["Image"],
+                                        }
+                                        console.log(result.rows._array[0])
+                                        storeData(userData)
+                                    },
+                                    (_, error) => {
+                                        console.log(error.message);
+                                    }
+                                )
+                            })
+                        } else {
+                            AsyncStorage.setItem('auth', '');
+                        }
+                    },
+                    (_, error) => {
+                        console.log(error.message);
+                    }
+                )
+            })
+        } catch (e) {
+            console.error(e)
+        } finally {
+            getData()
         }
     };
 
@@ -84,12 +121,12 @@ export const AuthProvider = ({children}) => {
     }
 
     useEffect(() => {
-        //recet()
-        getData();
+        getData()
         console.log(state)
         createTableUser();
         createTableCategory();
         createTableUserCategory();
+        recet()
     }, []);
 
     return (

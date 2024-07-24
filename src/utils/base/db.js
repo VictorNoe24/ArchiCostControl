@@ -105,7 +105,6 @@ const addUser = (phone, email, name, lastname, surname, image) => {
                 `INSERT INTO USERS (Phone, Email, Name, LastName, Surname, Image) VALUES (?, ?, ?, ?, ?, ?)`,
                 [phone, email, name, lastname, surname, image],
                 (_, result) => {
-                    console.log(result.insertId)
                 },
                 (_, error) => {
                     console.log(error)
@@ -127,7 +126,6 @@ const updateUser = (name, lastname, surname, image, email) => {
                 `UPDATE USERS SET Name = ?, LastName = ?, Surname = ?, Image = ? WHERE Email = ?`,
                 [name, lastname, surname, image, email],
                 (_, result) => {
-
                 },
                 (_, error) => {
                     console.log(error)
@@ -148,7 +146,8 @@ const addNewProyects = (nameProyect, date, nameClient, address) => {
             tx.executeSql(
                 `INSERT INTO PROYECTS (NameProyect, Date, NameClient, Address) VALUES (?, ?, ?, ?)`,
                 [nameProyect, date, nameClient, address],
-                (obj, resurt) => console.log(resurt.insertId)
+                (obj, resurt) => {
+                }
             );
         });
         return true;
@@ -164,7 +163,6 @@ const addNewInfo = (KeyIdProyect, Concepto, Unidad, Cantidad, PU, Importe) => {
                 `INSERT INTO INFO (KeyIdProyect, Concepto, Unidad, Cantidad, PU, Importe) VALUES (?, ?, ?, ?, ?, ?)`,
                 [KeyIdProyect, Concepto, Unidad, Cantidad, PU, Importe],
                 (_, results) => {
-                    console.log('Registro insertado con éxito. ID de fila: ', results.insertId);
                 },
                 (_, error) => {
                     console.error('Error al insertar datos en la tabla INFO: ', error);

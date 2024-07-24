@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 const Cards = ({ id }) => {
 
     const navigation = useNavigation();
-    const { data, getNote } = useNote();
+    const { data, getNote, sumImport } = useNote();
 
     const formatCurrency = (amount) => {
         const parts = amount.toFixed(2).toString().split('.');
@@ -38,6 +38,7 @@ const Cards = ({ id }) => {
         } finally {
             Dialog.hide();
             getNote(id);
+            sumImport(id);
         }
     }
 
