@@ -220,6 +220,43 @@ const deleteInfoId = (idInfo) => {
     }
 }
 
+const deleteProjectById = (projectId) => {
+    try {
+        db.transaction(tx => {
+            // Eliminar primero todos los registros de INFO relacionados con el proyecto
+            tx.executeSql(
+                `DELETE FROM INFO WHERE KeyIdProyect = ?`,
+                [projectId],
+                (_, results) => {
+                    console.log(`INFO relacionado con el proyecto ${projectId} eliminado`);
+                },
+                (_, error) => {
+                    console.error('Error al eliminar INFO relacionado:', error);
+                    return false;
+                }
+            );
+
+            // Luego, eliminar el proyecto de la tabla PROYECTS
+            tx.executeSql(
+                `DELETE FROM PROYECTS WHERE id = ?`,
+                [projectId],
+                (_, results) => {
+                    console.log(`Proyecto ${projectId} eliminado exitosamente`);
+                },
+                (_, error) => {
+                    console.error('Error al eliminar el proyecto:', error);
+                    return false;
+                }
+            );
+        });
+
+        return true;
+    } catch (error) {
+        console.error('Error al eliminar el proyecto y su información relacionada:', error);
+        return false;
+    }
+};
+
 export {
     createTableProyects,
     createTableInfoProyects,
@@ -232,5 +269,6 @@ export {
     updateInfo,
     addUser,
     updateUser,
+    deleteProjectById,
     db,
 };
