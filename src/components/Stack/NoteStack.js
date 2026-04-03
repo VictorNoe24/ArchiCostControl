@@ -1,10 +1,10 @@
 import React from "react"
-import {Button, Platform, StyleSheet, TouchableOpacity, View} from "react-native"
+import {Button, Platform, StyleSheet, Text, TouchableOpacity, View} from "react-native"
 import * as Print from 'expo-print';
 import {shareAsync} from 'expo-sharing';
 import {FontAwesome6} from '@expo/vector-icons';
 import {useNote} from "../../context/NoteContext";
-import {pdfHtml} from "../../utils/pdf/pdf";
+import {pdfHtml, pdfHtmlClean} from "../../utils/pdf/pdf";
 import * as FileSystem from 'expo-file-system';
 import {ALERT_TYPE, Toast} from "react-native-alert-notification";
 
@@ -13,6 +13,7 @@ const NoteStack = () => {
     const [selectedPrinter, setSelectedPrinter] = React.useState();
 
     const html = pdfHtml(dataProyect, data, importe);
+    const cleanHtml = pdfHtmlClean(dataProyect, data, importe);
 
     const validate = () => {
         if(importe == null) {
@@ -33,6 +34,16 @@ const NoteStack = () => {
         }
         await Print.printAsync({
             html,
+            printerUrl: selectedPrinter?.url,
+        });
+    };
+
+    const printCleanPdf = async () => {
+        if(validate()) {
+            return;
+        }
+        await Print.printAsync({
+            html: cleanHtml,
             printerUrl: selectedPrinter?.url,
         });
     };
@@ -69,6 +80,9 @@ const NoteStack = () => {
         <View style={styles.container}>
             <TouchableOpacity onPress={print}>
                 <FontAwesome6 name="file-pdf" size={30} color="black" style={styles.separator}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={printCleanPdf}>
+                <FontAwesome6 name="file-lines" size={28} color="black" style={styles.separator}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={printToFile}>
                 <FontAwesome6 name="share-square" size={30} color="black" style={styles.separator}/>

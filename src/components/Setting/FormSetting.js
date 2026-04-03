@@ -10,7 +10,7 @@ import {useNavigation} from "@react-navigation/native";
 
 const FormSetting = () => {
 
-    const { saveUser, dataUser, getUser, getUserTest} = useAuth();
+        const { saveUser, dataUser, getUser, getUserTest} = useAuth();
     const navigation = useNavigation();
 
     const [imageUri, setImageUri] = useState(null);

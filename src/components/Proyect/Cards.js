@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { Menu, Provider } from 'react-native-paper';
+import { ALERT_TYPE, Dialog } from "react-native-alert-notification";
+import { deleteProjectById } from "../../utils/base/db";
+import {useTheme} from "../../context/ThemeContext";
 
 const Cards = ({ searchPhrase, proyects, isLoading }) => {
     const navigation = useNavigation();
+    const [visible, setVisible] = useState(null); // Track which menu is open
+
+    const { data, state, getAllProyects } = useTheme();
+
+    const openMenu = (id) => setVisible(id);
+    const closeMenu = () => setVisible(null);
 
     const formateDate = (dateString) => {
         const months = [
@@ -17,6 +27,29 @@ const Cards = ({ searchPhrase, proyects, isLoading }) => {
         const monthIndex = date.getMonth();
         const year = date.getFullYear();
         return `${day} de ${months[monthIndex]} del ${year}`;
+    };
+
+    const deleteNote = (idDelete) => {
+        console.log(idDelete)
+        Dialog.show({
+            type: ALERT_TYPE.WARNING,
+            title: '¿Seguro quieres eliminar el proyecto?',
+            textBody: 'Una vez eliminada no se podra recuperar.',
+            button: 'Aceptar',
+            autoClose: true,
+            onPressButton: () => notification(idDelete),
+        })
+    }
+
+    const notification = (idDelete) => {
+        try {
+            deleteProjectById(idDelete);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            Dialog.hide();
+            getAllProyects();
+        }
     }
 
     const filterProyectsByName = () => {
@@ -36,31 +69,56 @@ const Cards = ({ searchPhrase, proyects, isLoading }) => {
     }
 
     return (
-        <View>
-            {filterProyectsByName().map((proyect) => (
-                <TouchableOpacity
-                    key={proyect.id}
-                    onPress={() => navigation.navigate("NewProyect", {
-                        screen: 'ListNote',
-                        params: { id: proyect.id }
-                    })}
-                    style={styles.container}
-                >
-                    <View>
-                        <View style={styles.row}>
-                            <Text style={styles.textDate}>{formateDate(proyect.Date)}</Text>
-                            <TouchableOpacity>
-                                {false && (<SimpleLineIcons name="options-vertical" size={24} color="black"/>)}
-                            </TouchableOpacity>
+        <Provider>
+            <View>
+                {filterProyectsByName().map((proyect) => (
+                    <TouchableOpacity
+                        key={proyect.id}
+                        onPress={() => navigation.navigate("NewProyect", {
+                            screen: 'ListNote',
+                            params: { id: proyect.id }
+                        })}
+                        style={styles.container}S
+                    >
+                        <View>
+                            <View style={styles.row}>
+                                <Text style={styles.textDate}>{formateDate(proyect.Date)}</Text>
+                                <Menu
+                                    visible={visible === proyect.id}
+                                    onDismiss={closeMenu}
+                                    anchor={
+                                        <TouchableOpacity onPress={() => openMenu(proyect.id)}>
+                                            <SimpleLineIcons name="options-vertical" size={24} color="black" />
+                                        </TouchableOpacity>
+                                    }
+                                    style={{ marginTop: -40 }}
+                                >
+                                    <Menu.Item
+                                        onPress={() => {
+                                            closeMenu();
+                                            console.log("Editar:", proyect.id);
+                                            // Acción de editar
+                                        }}
+                                        title="Editar"
+                                    />
+                                    <Menu.Item
+                                        onPress={() => {
+                                            closeMenu();
+                                            deleteNote(proyect.id);
+                                        }}
+                                        title="Eliminar"
+                                    />
+                                </Menu>
+                            </View>
+                            <Text style={styles.textProyect}>{proyect.NameProyect}</Text>
+                            <Text style={styles.textClient}>{proyect.NameClient}</Text>
                         </View>
-                        <Text style={styles.textProyect}>{proyect.NameProyect}</Text>
-                        <Text style={styles.textClient}>{proyect.NameClient}</Text>
-                    </View>
-                </TouchableOpacity>
-            ))}
-        </View>
-    )
-}
+                    </TouchableOpacity>
+                ))}
+            </View>
+        </Provider>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -93,8 +151,8 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
-    }
-})
+        justifyContent: 'space-between',
+    },
+});
 
 export default Cards;

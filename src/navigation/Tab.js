@@ -30,7 +30,7 @@ const MyStackProyects = () => {
             }}
         >
             <Stack.Screen
-                name='NewProyect'
+                name='NewProyects'
                 component={NewProyect}
                 options={{
                     headerTitle: 'Nuevo Proyecto',
@@ -80,7 +80,7 @@ const MyStackSettings = () => {
             }}
         >
             <Stack.Screen
-                name='Profile'
+                name='ProfileUser'
                 component={Profile}
                 options={{
                     headerTitle: 'Perfil',
@@ -142,7 +142,7 @@ export const HomeTabs = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name="HomeProyects"
+                name="HomeTab"
                 component={MyTabs}
                 options={{
                     headerShown: false,
