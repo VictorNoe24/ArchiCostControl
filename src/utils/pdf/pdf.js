@@ -1,11 +1,14 @@
 import {useAuth} from "../../context/AuthContext";
 
-const pdfHtml = (dataProyect, datas, total) => {
-
+const buildPdfHtml = (dataProyect, datas, total, options = {}) => {
     const { dataUser } = useAuth();
+    const {
+        showLogo = true,
+        showServices = true,
+    } = options;
     const currentDate = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = currentDate.toLocaleDateString('es-ES', options);
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = currentDate.toLocaleDateString('es-ES', dateOptions);
 
     const formatCurrency = (amount) => {
         const parts = amount.toFixed(2).toString().split('.');
@@ -48,6 +51,16 @@ const pdfHtml = (dataProyect, datas, total) => {
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 20px;
+                gap: 20px;
+            }
+
+            .logo-container.no-logo {
+                justify-content: flex-start;
+                margin-bottom: 10px;
+            }
+
+            .header-content {
+                flex: 1;
             }
 
             .header img {
@@ -113,9 +126,9 @@ const pdfHtml = (dataProyect, datas, total) => {
 
     <div class="container">
         <div class="header">
-            <div class="logo-container">
-                <img src="https://efavhov.stripocdn.email/content/guids/CABINET_7e9d1b9fef7c0d398bf6bcb4e7fc130e2e670e4d793fc60eecbbcf986fcbb699/images/logo.png" alt="Logo de la empresa">
-                <div>
+            <div class="logo-container ${showLogo ? '' : 'no-logo'}">
+                ${showLogo ? `<img src="https://efavhov.stripocdn.email/content/guids/CABINET_7e9d1b9fef7c0d398bf6bcb4e7fc130e2e670e4d793fc60eecbbcf986fcbb699/images/logo.png" alt="Logo de la empresa">` : ''}
+                <div class="header-content">
                     <h2>Presupuesto</h2>
                     ${dataProyect.map(data =>`
                         <p><strong>Proyecto:</strong> ${data.NameProyect}</p>
@@ -126,7 +139,7 @@ const pdfHtml = (dataProyect, datas, total) => {
                 </div>
             </div>
             <div class="contact-info">
-                <p><strong>Servicios:</strong> Construcción, remodelación, impermeabilización, pintura, plomería, electricidad y mantenimiento en general.</p>
+                ${showServices ? `<p><strong>Servicios:</strong> Construcción, remodelación, impermeabilización, pintura, plomería, electricidad y mantenimiento en general.</p>` : ''}
                 <p><strong>Teléfono:</strong> ${dataUser[0].Phone}</p>
                 <p><strong>Correo:</strong> ${dataUser[0].Email}</p>
             </div>
@@ -163,6 +176,18 @@ const pdfHtml = (dataProyect, datas, total) => {
     `;
 }
 
+const pdfHtml = (dataProyect, datas, total) => (
+    buildPdfHtml(dataProyect, datas, total)
+);
+
+const pdfHtmlClean = (dataProyect, datas, total) => (
+    buildPdfHtml(dataProyect, datas, total, {
+        showLogo: false,
+        showServices: false,
+    })
+);
+
 module.exports = {
-    pdfHtml
+    pdfHtml,
+    pdfHtmlClean
 };
